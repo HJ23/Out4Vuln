@@ -1,0 +1,29 @@
+API_KEYS:
+  Facebook_API_ID: ""
+  Facebook_API_SECRET: ""
+  URLSCAN_API_KEY: ""
+  SHODAN_API_KEY: ""
+  BING_API_KEY: ""
+  VirusTotal_API_KEY: ""
+  BinaryEdge_API_KEY: ""
+  CENSYS_API_KEY: ""
+  CENSYS_SECRET: ""
+
+EXTENSIONS:
+  - .png
+  - .jpg
+  - .jpeg
+  - .pdf
+  - .woff2
+  - .svg
+  - .css
+  - .tiff
+
+EXCLUDED_DOMAINS:
+  - example.com
+
+COOKIE_PATH:
+  ./cookie.txt
+
+SLACK_WEBHOOK:
+  https://hooks.slack.com
