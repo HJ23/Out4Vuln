@@ -15,4 +15,23 @@ For better results I highly encourage you to get API keys.
 
 Think this is useful? ⭐ Star us on GitHub — it helps!
 
+Out4Vuln can :
 
+- Find subdomains of given domain (active,passive)
+- Find all the available url's (passive,active)
+- Classify found urls for better understanding
+- Fuzz for hidden directories
+- Bypass 403 unauthorized code
+- Has Out-Of-Bound plugin
+- Hidden API key finder
+- HttpProber
+- Spider
+- Slack notifier
+- Nmap plugin
+
+- Currently can identify:
+-    Open-redirect
+-    Host Header Injection
+-    LFI 
+-    CRLF injection
+-& many more will be added soon.
