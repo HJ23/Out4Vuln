@@ -29,9 +29,13 @@ Out4Vuln can :
 - Slack notifier
 - Nmap plugin
 
-- Currently can identify:
+---
+
+Currently can identify:
+
 -    Open-redirect
 -    Host Header Injection
 -    LFI 
 -    CRLF injection
--& many more will be added soon.
+
+and many more will be added soon.
