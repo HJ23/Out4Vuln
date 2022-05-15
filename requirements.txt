@@ -1,0 +1,4 @@
+pyyaml
+requests
+termcolor
+bs4
