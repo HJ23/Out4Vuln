@@ -28,6 +28,7 @@ Out4Vuln can :
 - Spider
 - Slack notifier
 - Nmap plugin
+- HTML report generator
 
 ---
 
@@ -39,3 +40,17 @@ Currently can identify:
 -    CRLF injection
 
 and many more will be added soon.
+
+
+TODO list:
+
+- [] add oob support
+- [] WAF detect (bypass techniques 8mb limits,obfuscated payloads)
+- [] proxy option
+- [] cidr,ip port range
+- [] Vulnerable lib/soft version detect
+- [] CMS detector
+- [] Routing over TOR
+- [] Scan modes Light,Medium,Aggressive
+- [] Handle nmap outputs
+- [] Active subdomain support

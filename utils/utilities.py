@@ -30,30 +30,29 @@ class Log:
 class Requester:
     def __init__(self):
         # add host and origin
-        self.HEADERS={
+        self.__headers={
             "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
             "Referer":Configs.ConstReferer,
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/avif,image/webp,image/apng,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.8",
             "Accept-Encoding": "gzip",
             }
-        self.SESSION=requests.Session()
+        self.__session=requests.Session()
     def set_cookies(self,cookies):
-        self.SESSION.cookies.update(cookies)
+        self.__session.cookies.update(cookies)
     def get_cookies(self):
-        return self.SESSION.cookies.get_dict()
+        return self.__session.cookies.get_dict()
     def send_post(self,url,data,auth,json):
         try:
-            return self.SESSION.post(url,auth=auth,data=data,json=json,headers=self.HEADERS,verify=False,timeout=Configs.TIMEOUT)
+            return self.__session.post(url,auth=auth,data=data,json=json,headers=self.__headers,verify=False,timeout=Configs.TIMEOUT)
         except Exception as e:
             Log.info(e)
     def send_get(self,url,params):
         try:
-            return self.SESSION.get(url=url,allow_redirects=True,headers=self.HEADERS,verify=False,timeout=Configs.TIMEOUT,params=params)
+            return self.__session.get(url=url,allow_redirects=True,headers=self.__headers,verify=False,timeout=Configs.TIMEOUT,params=params)
         except Exception as e:
             Log.info(e)
-        
-
+            
 # logging decorator
 def LOGGER(name):
     def wrapper(func):
@@ -110,7 +109,7 @@ def get_date_and_time():
     return datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
 # classify and clean urls gathered from open-source resources. 
-def classify_urls(domain_name):
+def classify_urls(target):
     url_matcher=re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
     parameterized_urls=[]
     redirect_urls=[]
@@ -124,7 +123,7 @@ def classify_urls(domain_name):
 
     for url in urls:
         url=requests.utils.unquote(url)
-        if(not domain_name in url):
+        if(not target in url):
           continue
         tmp_urlparse=parse_qs(urlparse(url).query)
         if(len(tmp_urlparse)!=0):

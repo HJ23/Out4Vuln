@@ -1,13 +1,8 @@
+from ast import Import
 import json
 from utils.config import Configs
 from utils.utilities import Requester,Log
-import enum
-
-class MessageImportanceLevel(enum.Enum):
-    INFO = 1
-    WARNING = 2
-    ERROR = 3
-    VULNERABLE=4
+from utils.levels import *
 
 class Slack:
     __url=Configs.ConstSlackWebHook
@@ -28,15 +23,15 @@ class Slack:
             ]
           }
     @staticmethod
-    def send(msg,title,importance=MessageImportanceLevel.INFO):
+    def send(msg,title,importance=ImportanceLevel.INFO):
         Slack.slack_data["attachments"][0]["fields"][0]["value"]=msg
         Slack.slack_data["attachments"][0]["fields"][0]["title"]=title
         
-        if(importance==MessageImportanceLevel.INFO or importance==MessageImportanceLevel.WARNING):
+        if(importance==ImportanceLevel.INFO or importance==ImportanceLevel.WARNING):
             Slack.slack_data["icon_emoji"]=":large_blue_square:"
-        elif(importance==MessageImportanceLevel.ERROR):
+        elif(importance==ImportanceLevel.ERROR):
             Slack.slack_data["icon_emoji"]=":large_yellow_square:"
-        elif(importance==MessageImportanceLevel.VULNERABLE):
+        elif(importance==ImportanceLevel.VULNERABLE):
             Slack.slack_data["icon_emoji"]=":large_red_square:"
         else:
             Slack.slack_data["icon_emoji"]=":large_purple_square:"
