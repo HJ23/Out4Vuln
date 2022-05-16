@@ -80,7 +80,7 @@ def cache_check(headers):
 
 def save_file(**files_urls_dict):
     for file_name,urls in files_urls_dict.items():
-        with open(file_name,"w") as file:
+        with open(file_name,"a") as file:
             file.writelines(urls)
     return
 

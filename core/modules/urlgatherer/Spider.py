@@ -1,70 +1,52 @@
+from core.AttackerBase import AttackerBase
+from core.FinderBase import FinderBase
 from utils.utilities import *
 from bs4 import BeautifulSoup as BS
 from utils.utilities import *
 from urllib.parse import urlparse
-from core.HiddenFinder import HiddenFinder
-import urllib3
-urllib3.disable_warnings()
+from core.modules.vulnerability.HiddenFinder import HiddenFinder
 
 # spider will fetch contents of subdomains limit by subdomain
 # limit for each starting point
 # depth for limitation for each page
 
-class Spider(BaseClass):
-    def __init__(self,depth=5,limit=10000,reporter=None):
-        super().__init__()
-        CONFIGS.TIMEOUT=5
-        
-        self.reporter=reporter
+class Spider(FinderBase):
+    def __init__(self,reporter,depth=5,limit=200):
+        super().__init__(reporter)
         self.hiddenfinder=HiddenFinder(self.reporter)
         self.limit=limit
         self.depth=depth
-        
     def has_link(self,tag):
         return tag.has_attr('href') or tag.has_attr('src') or tag.has_attr('xlink:href') or  tag.has_attr("data-src")
-  
     def start(self,urls):
         results=set()
         already_visited=set()
-            
-        for i,url in enumerate(urls):
-            url_counter=1    
-            
+        for _,url in enumerate(urls):
+            url_counter=1
             tmp_queue=[(url,0)]
             already_visited.add(url)
-        
             while(len(tmp_queue)!=0 and url_counter<=self.limit):
                 if(url_counter%100==0):
-                    save_file(list(results),CONFIGS.CONST_SPIDER_OUT)
-          
+                    save_file({os.path.join(Configs.ConstOutputPath,Configs.ConstDomain+"_spider.txt") : list(results)},Configs.ConstSpiderOutPath)
                 node,counter=tmp_queue.pop(0)
-                
-                node=node if("https://" in node or "http://" in node) else "https://"+node
+                node=add_prefix(node)
                 url_counter+=1
                 found=False
-                for ext in [".gif",".GIF",".ttf",".png",".jpeg",".jpg",".woff",".css",".pdf",".tiff",".svg",".csv",".ini"\
-                    ".TTF",".PNG",".JPEG",".JPG",".WOFF",".CSS",".PDF",".TIFF",".SVG",".CSV",".INI"]:
-                    if(ext in node):
+                for ext in Configs.ConstExcludedExtensions:
+                    if(ext in node.lower()):
                         found=True
-                        node=requests.utils.unquote(node)
-                        results.add(node)
                         break
-
                 if(found):
                     continue
-                
                 resp=self.requester.send_get(node)
-                
-                if(resp is None):
+                if(resp is None or resp.status_code==404):
                     continue
-                
-                self.hiddenfinder.check(resp.text)
-                tmp_urls=CONFIGS.REGEX_OBJ_URL_SPIDER.findall(resp.text)
-            
+                node=requests.utils.unquote(node)
+                results.add(node)
+                self.hiddenfinder.check(resp.text,)    
+                tmp_urls=re.compile('https?://[^\s<>"]+|www\.[^\s<>"\']+').findall(resp.text)
                 if(resp.status_code!=404):
                     results.add(node)
-            
-            
                 if(not ".js" in node and not ".JS" in node):
                     soup=BS(resp.text,'lxml')
                     href_tags = soup.find_all(self.has_link)

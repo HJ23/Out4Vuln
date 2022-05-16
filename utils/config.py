@@ -27,6 +27,3 @@ class Configs:
     ConstRaptorOutPath=os.path.join(ConstRootPath,"outputs",ConstDomain+"_raptor.txt")
     ConstSlackWebHook=read_yaml(ConstYAMLPath)["SLACK_WEBHOOK"]
     ConstPayloadsPath=os.path.join(ConstRootPath,"payloads")
-    
-    # REGEX_OBJ_URL=re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
-    # REGEX_OBJ_URL_SPIDER=re.compile('https?://[^\s<>"]+|www\.[^\s<>"\']+') #"(?P<url>https?://[^\s]+)+[^<>)'#-]")
