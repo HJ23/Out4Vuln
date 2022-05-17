@@ -43,7 +43,6 @@ and many more will be added soon.
 
 
 TODO list:
-
 - [ ] add oob support
 - [ ] WAF detect (bypass techniques 8mb limits,obfuscated payloads)
 - [ ] proxy option
@@ -54,3 +53,8 @@ TODO list:
 - [ ] Scan modes Light,Medium,Aggressive
 - [ ] Handle nmap outputs
 - [ ] Active subdomain support
+
+#### Add functionalities (Spider):
+- Process spider outputs for subdomain discovery task
+- Parse robots.txt
+- Parse sitemap.xml

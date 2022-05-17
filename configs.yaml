@@ -18,6 +18,12 @@ EXTENSIONS:
   - .svg
   - .css
   - .tiff
+  - .pdf
+  - .gif
+  - .woff
+  - .ttf
+  - .eot
+  - .ico
 
 EXCLUDED_DOMAINS:
   - example.com

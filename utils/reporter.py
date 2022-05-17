@@ -42,14 +42,14 @@ class Reporter:
         self.chunked=10
     
     # Create heading for task type
-    def createBlock(self,name):  
+    def create_block(self,name):  
         self.html_skeleton+=f'''
                             <tr id="medium">
                             <th>{name}</th>
                             <th>{get_date_and_time()}</th>                         
                             </tr>
                             '''
-    def addRow(self,url,payload,level):
+    def add_row(self,url,payload,level):
         if(level==ImportanceLevel.INFO):
             self.html_skeleton+=" <tr id=low>"
         elif(level==ImportanceLevel.MEDIUM):

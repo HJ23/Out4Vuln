@@ -13,7 +13,6 @@ class OTX(FinderBase):
                 tmp_url=self.URL.format(domain=domain,page=str(page_count))
                 out=self.requester.send_get(tmp_url)
                 json_out=out.json()
-                
                 for result in json_out["url_list"]:
                     results+=[result["url"]]
                 if(not json_out["has_next"]):

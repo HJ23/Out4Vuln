@@ -15,7 +15,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 class Log:
     @staticmethod
     def info(arg,name=""):
-        if(Configs.VERBOSE_MODE):
+        if(Configs.ConstVerboseMode):
             if(isinstance(arg,str)):
                 cprint("# [INFO] "+arg,"blue")
             else:
@@ -42,12 +42,12 @@ class Requester:
         self.__session.cookies.update(cookies)
     def get_cookies(self):
         return self.__session.cookies.get_dict()
-    def send_post(self,url,data,auth,json):
+    def send_post(self,url,data=None,auth=None,json=None):
         try:
             return self.__session.post(url,auth=auth,data=data,json=json,headers=self.__headers,verify=False,timeout=Configs.TIMEOUT)
         except Exception as e:
             Log.info(e)
-    def send_get(self,url,params):
+    def send_get(self,url,params=None):
         try:
             return self.__session.get(url=url,allow_redirects=True,headers=self.__headers,verify=False,timeout=Configs.TIMEOUT,params=params)
         except Exception as e:
@@ -66,7 +66,7 @@ def LOGGER(name):
     return wrapper
 
 def rand_sleep():
-    time.sleep(random.randint(1,4))
+    time.sleep(random.randint(0,int(Configs.ConstWorkingMode)))
     return
 
 def cache_check(headers):
@@ -78,7 +78,7 @@ def cache_check(headers):
             return True
     return False
 
-def save_file(**files_urls_dict):
+def save_file(files_urls_dict):
     for file_name,urls in files_urls_dict.items():
         with open(file_name,"a") as file:
             file.writelines(urls)
@@ -92,18 +92,20 @@ def read_file(filename):
       results=list(map(lambda x:x.split("\n")[0],results))
     return results
 
-def add_prefix(url):
+def clean_add_prefix(url):
+    url=url.split("#")[0]
+    url=url.replace("\\","/").replace("\n","").replace("\r","").replace("\t","").strip()
     if(url!="" and not "http://" in url and not "https://" in url and url[0]!="/" and url[0]!="\\" ):
       url="https://"+url
     return url
-
+# clean and add urls without hostname 
 def correct_url(abs_url,url):
     if((len(url)>4 and url[0:4]=="http")):
         return url
     path=abs_url.split("/")[2]
-    url=url.split("#")[0] if("#" in url) else url
-    path=path+url if(len(url)!=0 and (url[0]=="/" or url[0]=="\\")) else path+"/"+url
-    return path
+    url=url.split("#")[0]
+    clean_url=path+url if(len(url)!=0 and (url[0]=="/" or url[0]=="\\")) else path+"/"+url
+    return clean_url
 
 def get_date_and_time():
     return datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
